@@ -1,23 +1,70 @@
 // Compiled by ClojureScript 0.0-2843 {}
 goog.provide('cljssample.core');
 goog.require('cljs.core');
-goog.require('goog.events');
 goog.require('goog.dom');
+goog.require('goog.Uri');
 goog.require('secretary.core');
+goog.require('goog.net.Jsonp');
 goog.require('goog.History');
+goog.require('goog.events');
+goog.require('goog.style');
 cljssample.core.app = goog.dom.getElement("app");
 cljssample.core.set_html_BANG_ = (function set_html_BANG_(el,content){
 return el.innerHTML = content;
+});
+cljssample.core.search_url = "http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
+cljssample.core.home_html = [cljs.core.str("<h1>Wikipedia Search:</h1>"),cljs.core.str("<section>"),cljs.core.str(" <input id=\"query\" placeholder=\"Type your search...\" />"),cljs.core.str("  <button id=\"searchbutton\">Search</button>"),cljs.core.str("  <ul id=\"results\"></ul>"),cljs.core.str("</section>")].join('');
+cljssample.core.render_results = (function render_results(results){
+var results__$1 = cljs.core.js__GT_clj.call(null,results);
+return cljs.core.reduce.call(null,((function (results__$1){
+return (function (acc,result){
+return [cljs.core.str(acc),cljs.core.str("<li>"),cljs.core.str(result),cljs.core.str("</li>")].join('');
+});})(results__$1))
+,"",cljs.core.second.call(null,results__$1));
+});
+cljssample.core.do_jsonp = (function do_jsonp(uri,callback){
+var req = (new goog.net.Jsonp((new goog.Uri(uri))));
+return req.send(null,callback);
 });
 var action__4724__auto___4736 = (function (params__4725__auto__){
 if(cljs.core.map_QMARK_.call(null,params__4725__auto__)){
 var map__4734 = params__4725__auto__;
 var map__4734__$1 = ((cljs.core.seq_QMARK_.call(null,map__4734))?cljs.core.apply.call(null,cljs.core.hash_map,map__4734):map__4734);
-return cljssample.core.set_html_BANG_.call(null,cljssample.core.app,"<h1>Hello World from home page.</h1>");
+cljssample.core.set_html_BANG_.call(null,cljssample.core.app,cljssample.core.home_html);
+
+var on_response = ((function (map__4734,map__4734__$1){
+return (function (results){
+var html = cljssample.core.render_results.call(null,results);
+return cljssample.core.set_html_BANG_.call(null,goog.dom.getElement("results"),html);
+});})(map__4734,map__4734__$1))
+;
+var on_search_click = ((function (on_response,map__4734,map__4734__$1){
+return (function (e){
+var user_query = goog.dom.getElement("query").value;
+var searchuri = [cljs.core.str(cljssample.core.search_url),cljs.core.str(user_query)].join('');
+return cljssample.core.do_jsonp.call(null,searchuri,on_response);
+});})(on_response,map__4734,map__4734__$1))
+;
+return goog.events.listen(goog.dom.getElement("searchbutton"),"click",on_search_click);
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4725__auto__)){
 var vec__4735 = params__4725__auto__;
-return cljssample.core.set_html_BANG_.call(null,cljssample.core.app,"<h1>Hello World from home page.</h1>");
+cljssample.core.set_html_BANG_.call(null,cljssample.core.app,cljssample.core.home_html);
+
+var on_response = ((function (vec__4735){
+return (function (results){
+var html = cljssample.core.render_results.call(null,results);
+return cljssample.core.set_html_BANG_.call(null,goog.dom.getElement("results"),html);
+});})(vec__4735))
+;
+var on_search_click = ((function (on_response,vec__4735){
+return (function (e){
+var user_query = goog.dom.getElement("query").value;
+var searchuri = [cljs.core.str(cljssample.core.search_url),cljs.core.str(user_query)].join('');
+return cljssample.core.do_jsonp.call(null,searchuri,on_response);
+});})(on_response,vec__4735))
+;
+return goog.events.listen(goog.dom.getElement("searchbutton"),"click",on_search_click);
 } else {
 return null;
 }
@@ -57,16 +104,12 @@ var map__4739 = params__4725__auto__;
 var map__4739__$1 = ((cljs.core.seq_QMARK_.call(null,map__4739))?cljs.core.apply.call(null,cljs.core.hash_map,map__4739):map__4739);
 var param = cljs.core.get.call(null,map__4739__$1,new cljs.core.Keyword(null,"param","param",2013631823));
 var message = [cljs.core.str("<h1>Parameter in url: <small>"),cljs.core.str(param),cljs.core.str("</small>!</h1>")].join('');
-console.log([cljs.core.str("Parameter: "),cljs.core.str(new cljs.core.Keyword(null,"param","param",2013631823).cljs$core$IFn$_invoke$arity$1(param))].join(''));
-
 return cljssample.core.set_html_BANG_.call(null,cljssample.core.app,message);
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4725__auto__)){
 var vec__4740 = params__4725__auto__;
 var param = cljs.core.nth.call(null,vec__4740,(0),null);
 var message = [cljs.core.str("<h1>Parameter in url: <small>"),cljs.core.str(param),cljs.core.str("</small>!</h1>")].join('');
-console.log([cljs.core.str("Parameter: "),cljs.core.str(new cljs.core.Keyword(null,"param","param",2013631823).cljs$core$IFn$_invoke$arity$1(param))].join(''));
-
 return cljssample.core.set_html_BANG_.call(null,cljssample.core.app,message);
 } else {
 return null;
@@ -118,6 +161,20 @@ return null;
 secretary.core.add_route_BANG_.call(null,"*",action__4724__auto___4746);
 
 cljssample.core.main = (function main(){
+var counter = cljs.core.atom.call(null,(0));
+var button = goog.dom.getElement("button");
+var display = goog.dom.getElement("clicksnumber");
+display.innerHTML = cljs.core.deref.call(null,counter);
+
+return goog.events.listen(button,"click",((function (counter,button,display){
+return (function (event){
+cljs.core.swap_BANG_.call(null,counter,cljs.core.inc);
+
+return display.innerHTML = cljs.core.deref.call(null,counter);
+});})(counter,button,display))
+);
+});
+cljssample.core.main1 = (function main1(){
 secretary.core.set_config_BANG_.call(null,new cljs.core.Keyword(null,"prefix","prefix",-265908465),"#");
 
 var history = (new goog.History());
@@ -129,6 +186,6 @@ return secretary.core.dispatch_BANG_.call(null,event.token);
 
 return history.setEnabled(true);
 });
-cljssample.core.main.call(null);
+cljssample.core.main1.call(null);
 
 //# sourceMappingURL=core.js.map
