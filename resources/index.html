@@ -1,6 +1,29 @@
 <!doctype html>
 <html lang="en">
   <head>
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <style>
+         .inspector {
+            margin-top: 30px;
+            font-weight: bold;
+            color: #666;
+            border: 1px solid #666;
+        }
+        .group-title-main {
+            border-bottom: 1px solid #BBB;
+            padding-bottom: 3px;
+            margin-bottom: 20px;
+        }
+        .group-title-minor {
+            font-size: 18px;
+            color: #666
+        }
+        .main-view {
+            margin-top: 30px;
+        }
+        
+    </style>
     <meta charset="utf-8">
     <title>CLJS SAMPLE</title>
   </head>
@@ -11,9 +34,13 @@
     <span id="clicksnumber"><span>
   </section>
   <button id="button">Click me</button>
-  <div id="app"/>
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        <div id="app"></div>
+    </div>
 </main>
   <script src="/static/js/app.js"></script>
   </body>
 </html>
+
 

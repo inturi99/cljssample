@@ -10,9 +10,11 @@
   [ring/ring-core "1.3.2" :exclusions [javax.servlet/servlet-api]]
   [ring/ring-servlet "1.3.2" :exclusions [javax.servlet/servlet-api]]
   [ring/ring-defaults "0.1.2" :exclusions [javax.servlet/servlet-api]]
-  [org.clojure/clojurescript "0.0-2843"]
   [cc.qbits/jet "0.5.4"]
-  [secretary "1.2.1"]]
+  [org.clojure/clojurescript "0.0-2843"]
+  [secretary "1.2.3"]
+  [reforms "0.4.0"]
+  [reagent "0.5.1"]]
 
 :source-paths ["src/clj"]
 :main cljssample.core
